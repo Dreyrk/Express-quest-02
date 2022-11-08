@@ -1,4 +1,5 @@
 const express = require("express");
+const db = require("./database");
 
 const app = express();
 
@@ -10,10 +11,8 @@ const welcome = (req, res) => {
 
 app.get("/", welcome);
 
-const movieHandlers = require("./movieHandlers");
-
-app.get("/api/movies", movieHandlers.getMovies);
-app.get("/api/movies/:id", movieHandlers.getMovieById);
+app.get("/api/users", db.getUsers);
+app.get("/api/users/:id", db.getUserById);
 
 app.listen(port, (err) => {
   if (err) {

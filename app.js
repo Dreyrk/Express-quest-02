@@ -1,8 +1,20 @@
 const express = require("express");
+const handler = require("./movieHandlers");
+const database = require("./database");
 
 const app = express();
 
-const port = 5000;
+const port = process.env.APP_PORT ?? 5000;
+
+//connect db
+database
+  .getConnection()
+  .then(() => {
+    console.log("Can reach database");
+  })
+  .catch((err) => {
+    console.error(err.message);
+  });
 
 const welcome = (req, res) => {
   res.send("Welcome to my favourite movie list");
@@ -10,10 +22,10 @@ const welcome = (req, res) => {
 
 app.get("/", welcome);
 
-const movieHandlers = require("./movieHandlers");
+app.get("/api/users", handler.getUsers);
+app.get("/api/users/:id", handler.getUserById);
 
-app.get("/api/movies", movieHandlers.getMovies);
-app.get("/api/movies/:id", movieHandlers.getMovieById);
+// app.post("/api/users", handler.postMovie);
 
 app.listen(port, (err) => {
   if (err) {

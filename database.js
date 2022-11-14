@@ -21,10 +21,10 @@ database
 const getUsers = (req, res) => {
   database
     .query("SELECT * FROM users")
-    .then((users) => {
-      if (users !== null) {
-        console.log(users);
-        res.json(users);
+    .then(([results]) => {
+      if (results[0] !== null) {
+        res.send(res.json(results[0]));
+        res.status(200);
       } else {
         res.status(404).send("User not found");
       }
@@ -40,10 +40,12 @@ const getUserById = (req, res) => {
 
   database
     .query(`SELECT * FROM users WHERE id=${id}`)
-    .then((users) => {
-      if (users.id === id) {
-        console.log(users);
-        res.json(users);
+    .then(([results]) => {
+      if (results[0] != null) {
+        if (results[0].id === id) {
+          res.send(res.json(results[0]));
+          res.status(200);
+        }
       } else {
         res.status(404).send("User not found");
       }

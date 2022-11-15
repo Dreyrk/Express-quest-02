@@ -14,7 +14,7 @@ database
     console.log("Can reach database");
   })
   .catch((err) => {
-    console.error(err.message);
+    console.error(err);
   });
 
 const welcome = (req, res) => {
@@ -29,6 +29,8 @@ app.get("/api/users", handler.getUsers);
 app.get("/api/users/:id", handler.getUserById);
 
 app.post("/api/users", handler.postUser);
+
+app.put("/api/users/:id", handler.updateUser);
 
 app.listen(port, (err) => {
   if (err) {

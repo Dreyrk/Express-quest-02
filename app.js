@@ -32,6 +32,8 @@ app.post("/api/users", handler.postUser);
 
 app.put("/api/users/:id", handler.updateUser);
 
+app.delete("/api/users/:id", handler.deleteUser);
+
 app.listen(port, (err) => {
   if (err) {
     console.error("Something bad happened");

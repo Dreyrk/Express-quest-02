@@ -1,6 +1,7 @@
 const express = require("express");
 const handler = require("./movieHandlers");
 const database = require("./database");
+const middleware = require("./middleware");
 
 const app = express();
 app.use(express.json());

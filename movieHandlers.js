@@ -43,11 +43,33 @@ const handler = {
     }
   },
   getUsers: (req, res) => {
+    let sql = "select * from users";
+    const sqlValues = [];
+    if (req.query.lastname != null) {
+      sql += " where lastname = ?";
+      sqlValues.push(req.query.lastname);
+    }
+    if (req.query.firstname != null) {
+      sql += " where firstname = ?";
+      sqlValues.push(req.query.firstname);
+    }
+    if (req.query.email != null) {
+      sql += " where email = ?";
+      sqlValues.push(req.query.email);
+    }
+    if (req.query.city != null) {
+      sql += " where city = ?";
+      sqlValues.push(req.query.city);
+    }
+    if (req.query.language != null) {
+      sql += " where language = ?";
+      sqlValues.push(req.query.language);
+    }
     database
-      .query("SELECT * FROM users")
-      .then(([results]) => {
-        if (results[0] !== null) {
-          res.status(200).send(res.json(results));
+      .query(sql, sqlValues)
+      .then(([users]) => {
+        if (users !== null) {
+          res.status(200).send(res.json(users));
         } else {
           res.status(404).send("User not found");
         }
@@ -122,7 +144,7 @@ const handler = {
         if (result.affectedRows === 0) {
           res.status(404).send("Not Found");
         } else {
-          res.sendStatus(204);
+          res.sendStatus(204).send("Updated");
         }
       })
       .catch((err) => {

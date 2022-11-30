@@ -3,17 +3,26 @@ const database = require("./database");
 const middleware = {
   validateUsers: (req, res, next) => {
     const { firstname, lastname, email, city, language } = req.body;
+    const errors = [];
 
     if (firstname == null) {
-      res.status(422).send("The field 'firstname' is required");
-    } else if (lastname == null) {
-      res.status(422).send("The field 'lastname' is required");
-    } else if (email == null) {
-      res.status(422).send("The field 'email' is required");
-    } else if (city == null) {
-      res.status(422).send("The field 'city' is required");
-    } else if (language == null) {
-      res.status(422).send("The field 'language' is required");
+      errors.push({ field: "firstname", message: "This field is required" });
+    }
+    if (lastname == null) {
+      errors.push({ field: "lastname", message: "This field is required" });
+    }
+    if (email == null) {
+      errors.push({ field: "email", message: "This field is required" });
+    }
+    if (city == null) {
+      errors.push({ field: "city", message: "This field is required" });
+    }
+    if (language == null) {
+      errors.push({ field: "language", message: "This field is required" });
+    }
+
+    if (errors.length) {
+      res.status(422).json({ validationErrors: errors });
     } else {
       next();
     }

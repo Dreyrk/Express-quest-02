@@ -1,7 +1,10 @@
 const database = require("./database");
+const { hashPassword } = require("./auth.js");
+
+const usersInfos = ["firstname", "lastname", "email", "city", "language"];
 
 const getUsers = (req, res) => {
-  const initialSql = "select * from users";
+  const initialSql = `select ${usersInfos} from users`;
   const where = [];
 
   if (req.query.city != null) {

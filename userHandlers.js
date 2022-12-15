@@ -1,6 +1,4 @@
 const database = require("./database");
-const { hashPassword, login } = require("./auth.js");
-
 const usersInfos = ["firstname", "lastname", "email", "city", "language"];
 
 const getUsers = (req, res) => {
@@ -60,9 +58,8 @@ const getUserById = (req, res) => {
 const getUserByEmailWithPasswordAndPassToNext = (req, res, next) => {
   const { email } = req.body;
 
-  console.log(email);
   database
-    .query("select * from users where email = ?", [email])
+    .query("select id, hashedPassword from users where email = ?", [email])
     .then(([users]) => {
       if (users[0] != null) {
         req.user = users[0];

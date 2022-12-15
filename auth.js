@@ -10,7 +10,6 @@ const hashPassword = (req, res, next) => {
     hashLength: 50,
   });
   hash.then((hashedPassword) => {
-    console.log(hashedPassword);
     delete req.body.password;
     req.body.hashedPassword = hashedPassword;
 
@@ -24,9 +23,7 @@ const verifyPassword = (req, res) => {
       if (isVerified) {
         const payload = { sub: req.user.id };
 
-        const token = jwt.sign(payload, process.env.JWT_SECRET, {
-          expiresIn: "1h",
-        });
+        const token = jwt.sign(payload, process.env.JWT_SECRET);
 
         delete req.user.hashedPassword;
         res.send({ token, user: req.user });
@@ -59,7 +56,7 @@ const verifyToken = (req, res, next) => {
     next();
   } catch (err) {
     console.error(err);
-    res.sendStatus(401);
+    res.sendStatus(401).send("token manquant");
   }
 };
 

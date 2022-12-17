@@ -24,11 +24,10 @@ const verifyPassword = (req, res) => {
         const payload = { sub: req.user.id };
 
         const token = jwt.sign(payload, process.env.JWT_SECRET);
-
         delete req.user.hashedPassword;
         res.send({ token, user: req.user });
       } else {
-        res.sendStatus(401);
+        res.status(401).send("popoopo");
       }
     })
     .catch((err) => {
@@ -56,7 +55,7 @@ const verifyToken = (req, res, next) => {
     next();
   } catch (err) {
     console.error(err);
-    res.sendStatus(401).send("token manquant");
+    res.status(401).send("azerty");
   }
 };
 

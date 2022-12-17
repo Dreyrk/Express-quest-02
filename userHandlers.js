@@ -59,14 +59,14 @@ const getUserByEmailWithPasswordAndPassToNext = (req, res, next) => {
   const { email } = req.body;
 
   database
-    .query("select id, hashedPassword from users where email = ?", [email])
+    .query("select * from users where email = ?", [email])
     .then(([users]) => {
       if (users[0] != null) {
         req.user = users[0];
 
         next();
       } else {
-        res.sendStatus(401);
+        res.status(401).send("bruh");
       }
     })
     .catch((err) => {
@@ -95,11 +95,17 @@ const postUser = (req, res) => {
 
 const updateUser = (req, res) => {
   const id = parseInt(req.params.id);
-  const { firstname, lastname, email, city, language } = req.body;
+  const {
+    firstname = "Default firstname",
+    lastname = "Default lastname",
+    email = "Default email",
+    city = "Default city",
+    language = "Default language",
+  } = req.body;
 
   database
     .query(
-      "update movies set firstname = ?, lastname = ?, email = ?, city = ?, language = ? where id = ?",
+      "update users set firstname = ?, lastname = ?, email = ?, city = ?, language = ? where id = ?",
       [firstname, lastname, email, city, language, id]
     )
     .then(([result]) => {
